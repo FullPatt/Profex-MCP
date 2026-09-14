@@ -5,22 +5,43 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pyprofex"
 version = "0.1.0"
-description = "Python bindings and tools for Profex XRD/Rietveld analysis"
+description = "Python bindings and tools for Profex XRD/Rietveld analysis — Search-Match, COD fingerprint database, phase identification and BGMN refinement"
 readme = "README.md"
 license = { text = "GPL-2.0-or-later" }
 authors = [
-    { name = "PhaseAnalysisXRD" },
+    { name = "FullPatt" },
 ]
 requires-python = ">=3.10"
+keywords = ["XRD", "Rietveld", "Profex", "BGMN", "Search-Match", "MCP", "diffraction"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
 dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov"]
 mcp = ["mcp>=1.0"]
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["pyprofex*"]
+[project.urls]
+Homepage = "https://github.com/FullPatt/Profex-MCP"
+Upstream = "https://github.com/Profex/Profex"
+
+[project.scripts]
+pyprofex = "pyprofex.profex_cli:main"
+
+# 本 pyproject.toml 位于包目录内部（pyprofex/pyproject.toml），
+# 包内容与 pyproject 同层，因此需要显式声明 package-dir 映射，
+# 否则 setuptools 会去 ./pyprofex/ 下找子包而漏掉全部模块。
+[tool.setuptools]
+packages = ["pyprofex"]
+package-dir = { "pyprofex" = "." }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

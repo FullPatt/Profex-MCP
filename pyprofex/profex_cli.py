@@ -6,6 +6,15 @@ Build with: pyinstaller --onefile pyprofex/profex_cli.py
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# Windows 控制台默认代码页为 GBK，直接输出 U+2014 等符号会显示为乱码，
+# 遇到不可编码字符时甚至会抛 UnicodeEncodeError。统一切到 UTF-8。
+for _stream in (sys.stdout, sys.stderr):
+    if _stream is not None and hasattr(_stream, "reconfigure"):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="pyprofex — XRD Phase Identification CLI")
